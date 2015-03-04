@@ -2,11 +2,17 @@ package pollApp;
 
 import java.util.ArrayList;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/*
+ * @Author Adwait Kaley
+ * 
+ * This class is the Bean Class for Moderators.
+ * 
+ * */
 
 public class Moderator 
 {
@@ -15,17 +21,17 @@ public class Moderator
 	
 	@JsonInclude(Include.NON_EMPTY)
 	@NotNull(message="Name cannot be Null")
-	@NotEmpty(message="Name cannot be Empty")
+	@Size(min=1,message="Name should be minimum 1 Character long")
 	String name;
 	
 	@JsonInclude(Include.NON_EMPTY)
 	@NotNull(message="Email cannot be Null")
-	@NotEmpty(message="Email cannot be Empty")
+	@Size(min=1,message="Name should be minimum 1 Character long")
 	String email;
 	
 	@JsonInclude(Include.NON_EMPTY)
 	@NotNull(message="Password cannot be Null")
-	@NotEmpty(message="Password cannot be Empty")
+	@Size(min=1,message="Name should be minimum 1 Character long")
 	String password;
 	
 	String createdAt;

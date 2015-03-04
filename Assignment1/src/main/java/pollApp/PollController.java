@@ -28,6 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/*
+ * @Author Adwait Kaley
+ * 
+ * This class is the Controller Class for the Poll Application.
+ * 
+ * */
+
 @Configuration
 @RestController
 @EnableWebMvcSecurity
@@ -74,21 +81,36 @@ public class PollController extends WebSecurityConfigurerAdapter
 		
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseBody
 	public ResponseEntity handleBadInput(MethodArgumentNotValidException e)
 	{
-		String errors="";
+		String errors;
+		StringBuffer result = new StringBuffer();
 		for(FieldError obj: e.getBindingResult().getFieldErrors())
 			{
-				errors+=obj.getDefaultMessage();
-				errors+="\n";
+				result.append("{");
+				result.append("\n");
+				result.append("field : "+obj.getField()+",");
+				result.append("\n");
+				result.append("rejectedValue : "+obj.getRejectedValue()+",");
+				result.append("\n");
+				result.append("objectName : "+obj.getObjectName()+",");
+				result.append("\n");
+				result.append("code : "+obj.getCode()+",");
+				result.append("\n");
+				result.append("Message : "+obj.getDefaultMessage());
+				result.append("\n");
+				result.append("}\n");
+				
 			}	
-		return new ResponseEntity(errors,HttpStatus.BAD_REQUEST);
+		errors=result.toString();
+	    return new ResponseEntity(errors,HttpStatus.BAD_REQUEST);
+		//return new ResponseEntity(errors,HttpStatus.BAD_REQUEST);
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/moderators/{id}",method=RequestMethod.GET)
 	public ResponseEntity getModerator(@PathVariable("id") int moderator_id) 
 	{
@@ -108,15 +130,15 @@ public class PollController extends WebSecurityConfigurerAdapter
 	 if(!modFound)
 		{
 				String modnotFound="MODERATOR NOT FOUND";
-				return new  ResponseEntity ("MODERATOR NOT FOUND",HttpStatus.BAD_REQUEST);
+				return new  ResponseEntity(modnotFound,HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
-				return new  ResponseEntity (mobj,HttpStatus.OK);
+				return new  ResponseEntity(mobj,HttpStatus.OK);
 		}		
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/moderators/{id}",method=RequestMethod.PUT)
 	public ResponseEntity editModerator(@PathVariable("id") int moderator_id,@RequestBody Moderator bodyelements) 
 	{
@@ -149,7 +171,7 @@ public class PollController extends WebSecurityConfigurerAdapter
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/moderators/{moderator_id}/polls",method=RequestMethod.POST)
 	public ResponseEntity createPoll(@PathVariable("moderator_id") int moderator_id,@Valid @RequestBody Poll bodyelements)
 	{
@@ -203,11 +225,10 @@ public class PollController extends WebSecurityConfigurerAdapter
 		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/moderators/{moderator_id}/polls/{poll_id}",method=RequestMethod.GET)
 	public ResponseEntity viewModeratorPoll(@PathVariable("moderator_id") String moderator_id,@PathVariable("poll_id") String poll_id)
-	{
-		Poll pollObject=null;
-		
+	{	
 			for(Poll pollSearch : pollList)
 			{
 				if(pollSearch.getId().equals(poll_id))
@@ -220,11 +241,10 @@ public class PollController extends WebSecurityConfigurerAdapter
 		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/moderators/{moderator_id}/polls",method=RequestMethod.GET)
 	public ResponseEntity viewAllPolls(@PathVariable("moderator_id") int moderator_id)
 	{
-		ArrayList<Poll> pollObject=null;
-			
 			for(Moderator modSearch : moderatorList)
 			{
 				if(modSearch.getId()==moderator_id)
@@ -232,7 +252,6 @@ public class PollController extends WebSecurityConfigurerAdapter
 					return new ResponseEntity<ArrayList<Poll>>(modSearch.getPollList(),HttpStatus.OK);
 				}
 			}
-			
 			
 				return new ResponseEntity("Poll could not be found",HttpStatus.BAD_REQUEST);
 		

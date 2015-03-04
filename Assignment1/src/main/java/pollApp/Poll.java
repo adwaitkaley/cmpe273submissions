@@ -1,11 +1,17 @@
 package pollApp;
 
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 
+/*
+ * @Author Adwait Kaley
+ * 
+ * This class is the Bean Class for Polls.
+ * 
+ * */
 
 public class Poll 
 {
@@ -14,23 +20,25 @@ public class Poll
 	
 	@JsonView(Pollview.ViewPollWithoutResult.class)
 	@NotNull(message="question cannot be Null")
-	@NotEmpty(message="question cannot be Empty")
+	@Size(min=1,message="question should be minimum 1 Character long")
 	String question;
 	
 	@JsonView(Pollview.ViewPollWithoutResult.class)
 	@NotNull(message="started_at cannot be Null")
-	@NotEmpty(message="started_at cannot be Empty")
+	@Size(min=24,message="started_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
+	
 	String started_at;
 	
 	@JsonView(Pollview.ViewPollWithoutResult.class)
 	@NotNull(message="expired_at cannot be Null")
-	@NotEmpty(message="expired_at cannot be Empty")
+	@Size(min=24,message="expired_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
+	
 	String expired_at;
 	
 	@JsonInclude(Include.NON_NULL)
 	@JsonView(Pollview.ViewPollWithoutResult.class)
-	@NotNull(message="expired_at cannot be Null")
-	@NotEmpty(message="expired_at cannot be Empty")
+	@NotNull(message="choice cannot be Null")
+	@Size(min=2,message="choice should contain atleast 2 options")
 	String choice[];
 	
 	@JsonInclude(Include.NON_NULL)
