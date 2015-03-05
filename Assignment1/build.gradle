@@ -18,7 +18,7 @@ jar {
 }
 
 bootRepackage {
-    mainClass = 'json.PollApplication'
+    mainClass = 'pollApp.PollApplication'
 }
 
 
