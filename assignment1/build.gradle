@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'myvote'
+    version =  '0.1.0'
+}
+
+bootRepackage {
+    mainClass = 'pollApp.PollApplication'
+}
+
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/release" }
+}
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web:1.2.1.RELEASE")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile("org.scala-lang:scala-library:2.11.5")
+    compile("org.webjars:bootstrap:3.1.1")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+    compile("org.springframework.boot:spring-boot-starter-security")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
