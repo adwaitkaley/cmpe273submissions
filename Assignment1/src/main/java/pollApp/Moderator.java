@@ -1,10 +1,13 @@
 package pollApp;
 
 import java.util.ArrayList;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /*
@@ -19,19 +22,21 @@ public class Moderator
 	
 	int id;
 	
-	@JsonInclude(Include.NON_EMPTY)
+	@JsonInclude(Include.NON_NULL)
 	@NotNull(message="Name cannot be Null")
 	@Size(min=1,message="Name should be minimum 1 Character long")
 	String name;
 	
-	@JsonInclude(Include.NON_EMPTY)
-	@NotNull(message="Email cannot be Null")
-	@Size(min=1,message="Name should be minimum 1 Character long")
-	String email;
 	
 	@JsonInclude(Include.NON_EMPTY)
-	@NotNull(message="Password cannot be Null")
-	@Size(min=1,message="Name should be minimum 1 Character long")
+	@NotNull(message="Email cannot be Null",groups=SpecialViews.ViewModeratorWithoutName.class)
+	@Size(min=1,message="Email should be minimum 1 Character long",groups=SpecialViews.ViewModeratorWithoutName.class)
+	String email;
+	
+	
+	@JsonInclude(Include.NON_EMPTY)
+	@NotNull(message="Password cannot be Null",groups=SpecialViews.ViewModeratorWithoutName.class)
+	@Size(min=1,message="Password should be minimum 1 Character long",groups=SpecialViews.ViewModeratorWithoutName.class)
 	String password;
 	
 	String createdAt;

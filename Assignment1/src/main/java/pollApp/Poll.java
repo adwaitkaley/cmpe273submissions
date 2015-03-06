@@ -18,25 +18,25 @@ public class Poll
 	
 	String id;
 	
-	@JsonView(Pollview.ViewPollWithoutResult.class)
+	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="question cannot be Null")
 	@Size(min=1,message="question should be minimum 1 Character long")
 	String question;
 	
-	@JsonView(Pollview.ViewPollWithoutResult.class)
+	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="started_at cannot be Null")
 	@Size(min=24,message="started_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
 	
 	String started_at;
 	
-	@JsonView(Pollview.ViewPollWithoutResult.class)
+	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="expired_at cannot be Null")
 	@Size(min=24,message="expired_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
 	
 	String expired_at;
 	
 	@JsonInclude(Include.NON_NULL)
-	@JsonView(Pollview.ViewPollWithoutResult.class)
+	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="choice cannot be Null")
 	@Size(min=2,message="choice should contain atleast 2 options")
 	String choice[];
