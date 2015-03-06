@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /*
@@ -22,21 +20,21 @@ public class Moderator
 	
 	int id;
 	
-	@JsonInclude(Include.NON_NULL)
-	@NotNull(message="Name cannot be Null")
-	@Size(min=1,message="Name should be minimum 1 Character long")
+	@JsonInclude(Include.NON_EMPTY)
+	@NotNull(message="Name cannot be Null",groups={SpecialViews.ViewModerator.class})
+	@Size(min=1,message="Name should be minimum 1 Character long",groups={SpecialViews.ViewModerator.class})
 	String name;
 	
 	
 	@JsonInclude(Include.NON_EMPTY)
-	@NotNull(message="Email cannot be Null",groups=SpecialViews.ViewModeratorWithoutName.class)
-	@Size(min=1,message="Email should be minimum 1 Character long",groups=SpecialViews.ViewModeratorWithoutName.class)
+	@NotNull(message="Email cannot be Null",groups={SpecialViews.ViewModeratorWithoutName.class,SpecialViews.ViewModerator.class})
+	@Size(min=1,message="Email should be minimum 1 Character long",groups={SpecialViews.ViewModeratorWithoutName.class,SpecialViews.ViewModerator.class})
 	String email;
 	
 	
 	@JsonInclude(Include.NON_EMPTY)
-	@NotNull(message="Password cannot be Null",groups=SpecialViews.ViewModeratorWithoutName.class)
-	@Size(min=1,message="Password should be minimum 1 Character long",groups=SpecialViews.ViewModeratorWithoutName.class)
+	@NotNull(message="Password cannot be Null",groups={SpecialViews.ViewModeratorWithoutName.class,SpecialViews.ViewModerator.class})
+	@Size(min=1,message="Password should be minimum 1 Character long",groups={SpecialViews.ViewModeratorWithoutName.class,SpecialViews.ViewModerator.class})
 	String password;
 	
 	String createdAt;

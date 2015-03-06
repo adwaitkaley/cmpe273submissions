@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import pollApp.SpecialViews.ViewModerator;
 import pollApp.SpecialViews.ViewModeratorWithoutName;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -74,7 +75,7 @@ public class PollController extends WebSecurityConfigurerAdapter
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/moderators",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity addModerator(@Valid @RequestBody Moderator bodyelements) 
+	public ResponseEntity addModerator(@Validated(ViewModerator.class) @RequestBody Moderator bodyelements) 
 	{
 				
 		Moderator mobj=null;	
