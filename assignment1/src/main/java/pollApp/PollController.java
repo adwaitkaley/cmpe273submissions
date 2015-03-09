@@ -60,7 +60,7 @@ public class PollController extends WebSecurityConfigurerAdapter
 	        .authorizeRequests()
 	        .antMatchers(HttpMethod.GET,"/api/v1/").permitAll()
 	        .antMatchers("/api/v1/polls/*").permitAll()
-	        .antMatchers(HttpMethod.POST,"/api/v1/moderators/").permitAll()
+	        .antMatchers(HttpMethod.POST,"/api/v1/moderators").permitAll()
 	        .antMatchers("/api/v1/moderators/*").fullyAuthenticated().anyRequest().hasRole("USER");
 	    }
 	 

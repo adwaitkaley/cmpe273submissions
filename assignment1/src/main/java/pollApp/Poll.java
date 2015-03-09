@@ -25,13 +25,13 @@ public class Poll
 	
 	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="started_at cannot be Null")
-	@Size(min=24,message="started_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
+	@Size(min=1,message="started_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
 	
 	String started_at;
 	
 	@JsonView(SpecialViews.ViewPollWithoutResult.class)
 	@NotNull(message="expired_at cannot be Null")
-	@Size(min=24,message="expired_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
+	@Size(min=1,message="expired_at should be in yyyy-MM-ddTHH:mm:ss.SSSZ format")
 	
 	String expired_at;
 	
@@ -112,7 +112,4 @@ public class Poll
 	public void setResults(int[] results) {
 		this.results = results;
 	}
-	
-	
-		
 }
