@@ -36,7 +36,7 @@ public class Moderator
 	@Size(min=1,message="Password should be minimum 1 Character long",groups={SpecialViews.ViewModeratorWithoutName.class,SpecialViews.ViewModerator.class})
 	String password;
 	
-	String createdAt;
+	String created_at;
 	
 
 	@JsonIgnore
@@ -62,13 +62,13 @@ public class Moderator
 	}
 
 	public Moderator(int id, String name, String email, String password,
-			String createdAt) {
+			String created_at) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.createdAt = createdAt;
+		this.created_at = created_at;
 		pollList= new ArrayList<Poll>();
 	}
 
@@ -108,14 +108,15 @@ public class Moderator
 		this.password = password;
 	}
 	
-	public String getCreatedAt() {
-		return createdAt;
+		
+	public String getCreated_at() {
+		return created_at;
 	}
-	
-	public void setCreatedAt(String createdAt) {
-		this.createdAt = createdAt;
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
 	}
-	
+
 	public ArrayList<Poll> getPollList() {
 		return pollList;
 	}
