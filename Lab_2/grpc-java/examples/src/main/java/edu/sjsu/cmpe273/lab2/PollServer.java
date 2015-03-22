@@ -83,7 +83,6 @@ public class PollServer {
     @Override
     public void createPoll(PollRequest req, StreamObserver<PollResponse> responseObserver) {
      
-System.out.println(req.toString());
 String Error="";
 if("".equals(req.getModeratorId()))
 {
@@ -104,10 +103,11 @@ if("".equals(req.getExpiredAt()))
 {
 	Error+="/n expired_at cannot be empty";
 }
-if(req.getChoiceCount()==0)
+if(req.getChoiceCount()<2)
 {
-	Error+="/n Choices cannot be empty";
+        Error+="/n There should be atleast two choices in the Poll";
 }
+
  	
  if(!"".equals(Error))
 {
@@ -123,8 +123,10 @@ else
 
 Random rnd = new Random();
 int count = 100000 + rnd.nextInt(90000);
-String pollId="Poll ID : "+Integer.toString(count,36);
-
+String pollId=Integer.toString(count,36);
+System.out.println("Created a new poll with following Details");
+System.out.println("Poll ID : "+pollId);
+System.out.println(req.toString());
 PollResponse id=PollResponse.newBuilder()
 .setId(pollId)
 .build();

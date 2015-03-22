@@ -59,7 +59,7 @@ public class PollClient {
     channel.shutdown().awaitTerminated(5, TimeUnit.SECONDS);
   }
 
-  public void greet() {
+  public void createPoll() {
     try {
      // logger.info("Will try to greet " + name + " ...");
       PollRequest request = PollRequest.newBuilder()
@@ -70,8 +70,8 @@ public class PollClient {
 .addChoice("Android")
 .addChoice("iPhone")
 .build();
-      PollResponse response = blockingStub.createPoll(request);
-      logger.info("Greeting: " + response.toString());
+       PollResponse response = blockingStub.createPoll(request);
+      logger.info("Created a new poll with PollId : " + response.getId());
     } catch (RuntimeException e) {
       logger.log(Level.WARNING, "RPC failed", e);
       return;
@@ -81,12 +81,7 @@ public class PollClient {
   public static void main(String[] args) throws Exception {
     PollClient client = new PollClient("localhost", 50051);
     try {
-      /* Access a service running on the local machine on port 50051 */
-     /* String user = "world";
-      if (args.length > 0) {
-        user = args[0]; /* Use the arg as the name to greet if provided
-      }*/
-      client.greet();
+      client.createPoll();
     } finally {
       client.shutdown();
     }
