@@ -27,7 +27,8 @@ targetCompatibility = 1.7
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.springframework.social:spring-social-facebook")
+    //compile("org.springframework.social:spring-social-facebook")
+    compile 'org.springframework.social:spring-social-facebook:1.1.1.RELEASE'
 }
 
 task wrapper(type: Wrapper) {
