@@ -2,6 +2,8 @@ package pollApp;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -44,6 +46,9 @@ public class Poll
 	
 	@JsonInclude(Include.NON_NULL)
 	int results[];
+
+    @JsonIgnore
+    boolean moderatorNotified;
 	
 	Poll(){}
 	
@@ -54,6 +59,7 @@ public class Poll
 		this.started_at = started_at;
 		this.expired_at = expired_at;
 		this.choice = choice;
+        this.moderatorNotified=false;
 	}
 	public Poll(String id, String question, String started_at,
 			String expired_at, String[] choice) {
@@ -63,6 +69,7 @@ public class Poll
 		this.started_at = started_at;
 		this.expired_at = expired_at;
 		this.choice = choice;
+        this.moderatorNotified=false;
 		this.results=new int[choice.length];
 		for(int i=0;i<choice.length;i++)
 			this.results[i]=0;
@@ -76,6 +83,7 @@ public class Poll
 		this.expired_at = expired_at;
 		this.choice = choice;
 		this.results = results;
+        this.moderatorNotified=false;
 	}
 	public String getId() {
 		return id;
@@ -113,4 +121,11 @@ public class Poll
 	public void setResults(int[] results) {
 		this.results = results;
 	}
+    public boolean isModeratorNotified() {
+        return moderatorNotified;
+    }
+
+    public void setModeratorNotified(boolean moderatorNotified) {
+        this.moderatorNotified = moderatorNotified;
+    }
 }

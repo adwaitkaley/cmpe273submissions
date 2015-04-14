@@ -55,6 +55,8 @@ public class PollController extends WebSecurityConfigurerAdapter
     @Autowired
     private PollRepository pollRepository;
 
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 	 @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 	        http
@@ -332,8 +334,7 @@ public class PollController extends WebSecurityConfigurerAdapter
 	public String getCurrentTimestamp()
 	{
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		String formattedDate = sdf.format(date);
+		String formattedDate = simpleDateFormat.format(date);
 		return formattedDate;
 	}
 
@@ -344,35 +345,64 @@ public class PollController extends WebSecurityConfigurerAdapter
 		return Integer.toString(count,36);
 	}
 
+    /*
+    * The EmailNotifier() method is a scheduled method that
+    * runs every five minutes to notify moderators of the
+    * expired polls via Email.
+    * */
 
-
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 300000)
     public void EmailNotifier() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         for(Poll pobj:pollRepository.findAll())
         {
-            try {
-                    Date sysDate=sdf.parse(getCurrentTimestamp().split("Z")[0]);
-                    Date pollDate=sdf.parse(pobj.getExpired_at().split("Z")[0]);
-                if(sysDate.after(pollDate))
-                {
-                    String resultString="advait.kaley@gmail.com:010120357:Poll Result[";
-                    for(int i=0;i<pobj.getChoice().length;i++)
-                    {
-                        if(i==pobj.getChoice().length-1)
-                            resultString+=pobj.getChoice()[i]+"="+pobj.getResults()[i]+"]";
-                        else
-                            resultString+=pobj.getChoice()[i]+"="+pobj.getResults()[i]+",";
+            if(!pobj.isModeratorNotified()) {
+                String moderatorEmail=getModeratorEmail(pobj.getId());
+                try {
+                    Date sysDate = simpleDateFormat.parse(getCurrentTimestamp());
+                    Date pollDate = simpleDateFormat.parse(pobj.getExpired_at());
+                    if (sysDate.after(pollDate)) {
+                        String resultString = moderatorEmail+":010120357:Poll Result[";
+                        for (int i = 0; i < pobj.getChoice().length; i++) {
+                            if (i == pobj.getChoice().length - 1)
+                                resultString += pobj.getChoice()[i] + "=" + pobj.getResults()[i] + "]";
+                            else
+                                resultString += pobj.getChoice()[i] + "=" + pobj.getResults()[i] + ",";
+                        }
+                        System.out.println(resultString);
+                        PollProducer pollProducer = new PollProducer();
+                        pollProducer.sendMessage("cmpe273-topic", resultString);
+                        pobj.setModeratorNotified(true);
+                        pollRepository.save(pobj);
                     }
-                    System.out.println(resultString);
-                    PollProducer pollProducer=new PollProducer();
-                    pollProducer.sendMessage("cmpe273-topic",resultString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
 
+
+    }
+
+    /*
+    * The getModeratorEmail() method gets the Moderator Email for a given poll
+    * uniquely identified by the pollId
+    * */
+    public String getModeratorEmail(String pollId)
+    {
+        String moderatorEmail=null;
+        for(Moderator mobj : repository.findAll())
+        {
+            for(String poll : mobj.getPollList())
+            {
+                if(pollId.equals(poll))
+                {
+                    moderatorEmail=mobj.getEmail();
+                    return moderatorEmail;
+                }
+
+            }
+        }
+        return moderatorEmail;
     }
 
 
