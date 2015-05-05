@@ -3,7 +3,7 @@
 .project
 .settings
 logs
-
+.idea
 
 # Package Files #
 *.jar
