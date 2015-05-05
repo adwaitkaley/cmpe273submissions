@@ -8,7 +8,7 @@ public class ConsistentClient {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Starting Cache Client...");
+        System.out.println("Starting Cache Consistent Client...");
 
         ArrayList<String> cacheList=new ArrayList<String>();
         cacheList.add("http://localhost:3000");
@@ -39,7 +39,7 @@ public class ConsistentClient {
 
         }
 
-        System.out.println("Existing Cache Client...");
+        System.out.println("Existing Cache Consistent Client...");
     }
 
     public static void addElementToCache(int key,String value,CacheServiceInterface cache)
